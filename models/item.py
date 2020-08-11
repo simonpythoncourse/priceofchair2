@@ -1,15 +1,16 @@
-from typing import Dict
-from bs4 import BeautifulSoup
 from dataclasses import dataclass, field
+from typing import Dict, List
+from bs4 import BeautifulSoup
 import requests
 import re
 import uuid
+from common.database import Database
 from models.model import Model
 
 
 @dataclass(eq=False)
 class Item(Model):
-    collection: str = field(init=False, default='items')
+    collection: str = field(init=False, default="items")
     url: str
     tag_name: str
     query: Dict

@@ -1,13 +1,14 @@
+from dataclasses import dataclass, field
 import uuid
 import re
-from dataclasses import dataclass, field
 from typing import Dict
 from models.model import Model
+from common.database import Database
 
 
 @dataclass(eq=False)
 class Store(Model):
-    collection: str = field(init=False, default='stores')
+    collection: str = field(init=False, default="stores")
     name: str
     url_prefix: str
     tag_name: str
@@ -29,12 +30,17 @@ class Store(Model):
 
     @classmethod
     def get_by_url_prefix(cls, url_prefix: str) -> "Store":
-        url_regex = {"$regex": "^{}".format(url_prefix)}
+        url_regex = {"$regex": '^{}'.format(url_prefix)}
         return cls.find_one_by("url_prefix", url_regex)
 
     @classmethod
     def find_by_url(cls, url: str) -> "Store":
-        pattern = re.compile(r"(https?://.*?/)")
+        """
+        Return a store from a url like "http://www.johnlewis.com/item/sdfj4h5g4g21k.html"
+        :param url: The item's URL
+        :return: a Store
+        """
+        pattern = re.compile(r"(https?:\/\/.*?\/)")
         match = pattern.search(url)
         url_prefix = match.group(1)
         return cls.get_by_url_prefix(url_prefix)

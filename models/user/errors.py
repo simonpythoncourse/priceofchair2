@@ -1,3 +1,5 @@
+
+
 class UserError(Exception):
     def __init__(self, message):
         self.message = message
@@ -15,5 +17,5 @@ class InvalidEmailError(UserError):
     pass
 
 
-class InvalidPasswordError(UserError):
+class IncorrectPasswordError(UserError):
     pass
